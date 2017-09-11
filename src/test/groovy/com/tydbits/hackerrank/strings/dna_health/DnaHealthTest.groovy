@@ -61,7 +61,7 @@ class DnaHealthTest extends Specification {
         c   | n     | s    | expectedInitDuration | expectedSearchDuration | expectedOutputs
         'a' | 512   | 128  | 1000                 | 1000                   | 400000
         'a' | 1024  | 128  | 1000                 | 1000                   | 400000
-        'a' | 10240 | 128  | 5000 /* ??? */       | 3000                   | 400000
+        'a' | 10240 | 128  | 3000 /* ??? */       | 3000                   | 400000
         // 'a' | 10240 | 1024 | 5000                 | 5000                   | 80000000
     }
 

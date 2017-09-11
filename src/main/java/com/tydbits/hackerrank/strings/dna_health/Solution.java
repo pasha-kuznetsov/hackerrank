@@ -107,11 +107,9 @@ class DnaHealth {
 
 class Dna {
     private final Node root;
-    private final HashMap<String, Node> index; // short repeating genes optimization
 
     Dna() {
         this.root = new Node(null, '\0');
-        this.index = new HashMap<>();
     }
 
     Dna(String[] genes, long[] health) {
@@ -126,33 +124,22 @@ class Dna {
     }
 
     int parseGene(int id, String str, int start, long health) {
-        while (start < str.length() && !Character.isAlphabetic(str.charAt(start)))
-            ++start;
-
+        int i = start;
+        while (i < str.length() && !Character.isAlphabetic(str.charAt(i)))
+            ++i;
         char letter;
-        String indexKey = getIndexKey(str, start);
-        Node node = index.getOrDefault(indexKey, root);
-        int i = node == root ? start : start + indexKey.length();
+        Node node = root;
         for (; i < str.length() && Character.isAlphabetic(letter = str.charAt(i)); ++i) {
             Node next = node.findChild(letter, null);
             if (next == null)
                 node.addChild(next = new Node(node, letter));
             node = next;
-            if (i == start + indexKey.length() - 1)
-                index.put(indexKey, node);
         }
         if (node.output == null)
             node.output = new GenesHealth(id, health);
         else
             node.output.put(id, health);
         return i;
-    }
-
-    private String getIndexKey(String str, int start) {
-        int i = start;
-        while (i < Math.min(str.length(), start + 10) && Character.isAlphabetic(str.charAt(i)))
-            ++i;
-        return str.substring(start, i);
     }
 
     void setSuffixes() {
@@ -182,7 +169,6 @@ class Dna {
         }
     }
 
-    // `predicate` returns `true` to stop searching
     void search(String str, Consumer<GenesHealth> output) {
         search(str, 0, output);
     }
@@ -252,16 +238,22 @@ class Node {
 
 class GenesHealth {
     private int id; // single value optimization
+    private int idMin;
+    private int idMax;
     private long health;
+    private long healthTotal;
     private TreeMap<Integer, Long> values;
 
     GenesHealth(int id, long health) {
-        this.id = id;
-        this.health = health;
+        this.id = this.idMin = this.idMax = id;
+        this.health = this.healthTotal = health;
     }
 
     void put(int id, long health) {
         getMap().put(id, health);
+        if (id < idMin) this.idMin = id;
+        if (id > idMax) this.idMax = id;
+        this.healthTotal += health;
     }
 
     Map<Integer, Long> getMap() {
@@ -275,6 +267,10 @@ class GenesHealth {
     long health(int first, int last) {
         if (values == null)
             return id >= first && id <= last ? health : 0;
+        if (first <= idMin && last >= idMax)
+            return healthTotal;
+        else if (first > idMax || last < idMin)
+            return 0;
         long r = 0;
         for (long health : values.subMap(first, true, last, true).values()) r += health;
         return r;
