@@ -3,34 +3,73 @@
 
 package com.tydbits.hackerrank.strings.dna_health;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class Solution {
 
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = in.nextInt();
+            int n = Integer.parseInt(in.readLine());
+            String genes = in.readLine();
+            String health = in.readLine();
 
-        String[] genes = new String[n];
-        for(int g=0; g < n; g++) genes[g] = in.next();
+            Dna dna = new Dna();
+            parse(dna, n, genes, health);
 
-        long[] health = new long[n];
-        for(int h=0; h < n; h++) health[h] = in.nextLong();
+            DnaHealth dnaHealth = new DnaHealth(dna);
+            int s = Integer.parseInt(in.readLine());
+            for (int i = 0; i < s; i++) {
+                String str = in.readLine();
+                LongParser longs = new LongParser(str);
+                int first = (int) longs.next();
+                int last = (int) longs.next();
+                dnaHealth.processStrand(first, last, str, skipUntil(str, longs.pos, Character::isAlphabetic));
+            }
 
-        Dna dna = new Dna(genes, health);
-        DnaHealth dnaHealth = new DnaHealth(dna);
+            System.out.printf("%d %d\n", dnaHealth.minHealth(), dnaHealth.maxHealth());
 
-        int s = in.nextInt();
-        for (int a0 = 0; a0 < s; a0++){
-            int first = in.nextInt();
-            int last = in.nextInt();
-            String d = in.next();
-            dnaHealth.processStrand(first, last, d);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void parse(Dna dna, int n, String geneStr, String healthStr) {
+        int pos = 0;
+        LongParser healthParser = new LongParser(healthStr);
+        for (int i = 0; i < n; ++i)
+            pos = dna.parseGene(i, geneStr, pos, healthParser.next());
+        dna.setSuffixes();
+    }
+
+    static class LongParser {
+        final String str;
+        int pos;
+
+        LongParser(String str) {
+            this.str = str;
         }
 
-        System.out.printf("%d %d\n", dnaHealth.minHealth(), dnaHealth.maxHealth());
+        long next() {
+            pos = skipUntil(str, pos, Character::isDigit);
+            StringBuilder sb = new StringBuilder(32);
+            char ch;
+            for (; pos < str.length() && Character.isDigit(ch = str.charAt(pos)); ++pos)
+                sb.append(ch);
+            return Long.parseLong(sb.toString());
+        }
+    }
+
+    private static int skipUntil(String str, int pos, Predicate<Character> predicate) {
+        while (pos < str.length() && !predicate.test(str.charAt(pos)))
+            ++pos;
+        return pos;
     }
 
     static class DnaHealth {
@@ -46,14 +85,18 @@ public class Solution {
         long maxHealth() { return maxHealth; }
 
         void processStrand(int first, int last, String d) {
-            long health = getHealth(first, last, d);
+            processStrand(first, last, d, 0);
+        }
+
+        void processStrand(int first, int last, String d, int start) {
+            long health = getHealth(first, last, d, start);
             if (health < minHealth) minHealth = health;
             if (health > maxHealth) maxHealth = health;
         }
 
-        private long getHealth(int first, int last, String d) {
+        private long getHealth(int first, int last, String d, int start) {
             final long[] health = new long[] {0};
-            dna.search(d, (GenesHealth genesHealth) -> {
+            dna.search(d, start, (GenesHealth genesHealth) -> {
                 for (long geneHealth : genesHealth.subMap(first, true, last, true).values()) {
                     health[0] += geneHealth;
                     outputs += 1;
@@ -66,17 +109,28 @@ public class Solution {
     static class Dna {
         final Node root;
 
-        Dna(String[] genes, long[] health) {
+        Dna() {
             this.root = new Node(null, '\0');
+        }
+
+        Dna(String[] genes, long[] health) {
+            this();
             for (int i = 0; i < genes.length; ++i)
                 addGene(i, genes[i], health[i]);
             setSuffixes();
         }
 
         private void addGene(int id, String str, long health) {
+            parseGene(id, str, 0, health);
+        }
+
+        private int parseGene(int id, String str, int start, long health) {
+            int i = start;
+            while (i < str.length() && !Character.isAlphabetic(str.charAt(i)))
+                ++i;
+            char letter;
             Node gene = root;
-            for (int i = 0; i < str.length(); ++i) {
-                char letter = str.charAt(i);
+            for (; i < str.length() && Character.isAlphabetic(letter = str.charAt(i)); ++i) {
                 Node next = gene.children.get(letter);
                 if (next == null)
                     gene.children.put(letter, next = new Node(gene, letter));
@@ -85,6 +139,7 @@ public class Solution {
             if (gene.output == null)
                 gene.output = new GenesHealth();
             gene.output.put(id, health);
+            return i;
         }
 
         private void setSuffixes() {
@@ -116,8 +171,12 @@ public class Solution {
 
         // `predicate` returns `true` to stop searching
         void search(String str, Consumer<GenesHealth> output) {
+            search(str, 0, output);
+        }
+
+        void search(String str, int start, Consumer<GenesHealth> output) {
             Node node = root;
-            for (int i = 0; i < str.length(); ++i) {
+            for (int i = start; i < str.length(); ++i) {
                 char letter = str.charAt(i);
 
                 Node next;
