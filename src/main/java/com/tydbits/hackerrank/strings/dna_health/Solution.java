@@ -100,7 +100,7 @@ class DnaHealth {
         dna.search(d, start, (GenesHealth genesHealth) -> {
             health[0] += genesHealth.health(first, last);
             outputs += 1;
-        });
+        }, first, last);
         return health[0];
     }
 }
@@ -170,10 +170,10 @@ class Dna {
     }
 
     void search(String str, Consumer<GenesHealth> output) {
-        search(str, 0, output);
+        search(str, 0, output, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
-    void search(String str, int start, Consumer<GenesHealth> output) {
+    void search(String str, int start, Consumer<GenesHealth> output, int first, int last) {
         Node node = root;
         for (int i = start; i < str.length(); ++i) {
             char letter = str.charAt(i);
@@ -187,11 +187,17 @@ class Dna {
             } while (next == null);
 
             for (Node suffix = node.suffixOutput; suffix != null; suffix = suffix.suffixOutput)
-                output.accept(suffix.output);
+                output(suffix.output, output, first, last);
 
             if (node.output != null)
-                output.accept(node.output);
+                output(node.output, output, first, last);
         }
+    }
+
+    private void output(GenesHealth output, Consumer<GenesHealth> callback, int first, int last) {
+        if (first > output.idMax) return;
+        if (last < output.idMin) return;
+        callback.accept(output);
     }
 }
 
@@ -238,8 +244,8 @@ class Node {
 
 class GenesHealth {
     private int id; // single value optimization
-    private int idMin;
-    private int idMax;
+    int idMin;
+    int idMax;
     private long health;
     private long healthTotal;
     private TreeMap<Integer, Long> values;
