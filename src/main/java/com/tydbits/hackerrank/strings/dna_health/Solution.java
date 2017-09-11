@@ -38,6 +38,8 @@ public class Solution {
         private long minHealth = Long.MAX_VALUE;
         private long maxHealth = Long.MIN_VALUE;
 
+        long outputs;
+
         DnaHealth(Dna dna) { this.dna = dna; }
 
         long minHealth() { return minHealth; }
@@ -52,8 +54,10 @@ public class Solution {
         private long getHealth(int first, int last, String d) {
             final long[] health = new long[] {0};
             dna.search(d, (GenesHealth genesHealth) -> {
-                for (long geneHealth : genesHealth.subMap(first, true, last, true).values())
+                for (long geneHealth : genesHealth.subMap(first, true, last, true).values()) {
                     health[0] += geneHealth;
+                    outputs += 1;
+                }
             });
             return health[0];
         }

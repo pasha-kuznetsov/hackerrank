@@ -1,7 +1,6 @@
 package com.tydbits.hackerrank.strings.dna_health
 
 import spock.lang.Specification
-import spock.lang.Timeout
 import spock.lang.Unroll
 
 class DnaHealthTest extends Specification {
@@ -39,7 +38,7 @@ class DnaHealthTest extends Specification {
         def strands = []
         for (int i = s; i >= 1; i--)
             strands.add(nChars(i, c.charAt(0)))
-        Solution.DnaHealth d;
+        Solution.DnaHealth d
         def initDuration = benchmark {
             d = new Solution.DnaHealth([genes as String[], health as long[]] as Solution.Dna)
         }
@@ -54,15 +53,16 @@ class DnaHealthTest extends Specification {
         }
 
         then:
+        d.outputs < expectedOutputs
         initDuration < expectedInitDuration
         searchDuration < expectedSearchDuration
 
         where:
-        c   | n     | s    | expectedInitDuration | expectedSearchDuration
-//        'a' | 512   | 128  | 1000                 | 1000
-//        'a' | 1024  | 128  | 1000                 | 1000
-//        'a' | 10240 | 128  | 3000                 | 3000
-        'a' | 10240 | 1024 | 5000                 | 5000
+        c   | n     | s    | expectedInitDuration | expectedSearchDuration | expectedOutputs
+        'a' | 512   | 128  | 1000                 | 1000                   | 200000
+        'a' | 1024  | 128  | 1000                 | 1000                   | 200000
+        'a' | 10240 | 128  | 5000 /* ??? */       | 3000                   | 200000
+        'a' | 10240 | 1024 | 5000                 | 5000                   | 80000000
     }
 
     def benchmark = { closure ->
