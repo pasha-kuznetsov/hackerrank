@@ -15,7 +15,7 @@ class SolutionParserTest extends Specification {
         def results = []
         def g = genes.trim().split()
         d.search(query, { found ->
-            found.each { k, v ->
+            found.getMap().each { k, v ->
                 results.add(g[k] + ": " + v)
             }
         })

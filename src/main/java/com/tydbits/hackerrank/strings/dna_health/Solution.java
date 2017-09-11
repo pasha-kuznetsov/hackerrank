@@ -98,10 +98,8 @@ class DnaHealth {
     private long getHealth(int first, int last, String d, int start) {
         final long[] health = new long[] {0};
         dna.search(d, start, (GenesHealth genesHealth) -> {
-            for (long geneHealth : genesHealth.subMap(first, true, last, true).values()) {
-                health[0] += geneHealth;
-                outputs += 1;
-            }
+            health[0] += genesHealth.health(first, last);
+            outputs += 1;
         });
         return health[0];
     }
@@ -130,16 +128,17 @@ class Dna {
         while (i < str.length() && !Character.isAlphabetic(str.charAt(i)))
             ++i;
         char letter;
-        Node gene = root;
+        Node node = root;
         for (; i < str.length() && Character.isAlphabetic(letter = str.charAt(i)); ++i) {
-            Node next = gene.children.get(letter);
+            Node next = node.findChild(letter, null);
             if (next == null)
-                gene.children.put(letter, next = new Node(gene, letter));
-            gene = next;
+                node.addChild(next = new Node(node, letter));
+            node = next;
         }
-        if (gene.output == null)
-            gene.output = new GenesHealth();
-        gene.output.put(id, health);
+        if (node.output == null)
+            node.output = new GenesHealth(id, health);
+        else
+            node.output.put(id, health);
         return i;
     }
 
@@ -148,20 +147,20 @@ class Dna {
 
         // `root` and its immediate children point back to `root`
         root.suffix = root;
-        for (Node gene : root.children.values()) {
+        for (Node gene : root.children()) {
             gene.suffix = root;
-            queue.addAll(gene.children.values());
+            queue.addAll(gene.children());
         }
 
         // everyone else discovers their suffix from their parent
         while (!queue.isEmpty()) {
             Node node = queue.poll();
-            queue.addAll(node.children.values());
+            queue.addAll(node.children());
 
             Node suffix = node.parent;
             do {
                 suffix = suffix.suffix;
-                node.suffix = suffix.children.getOrDefault(node.letter, suffix == root ? root : null);
+                node.suffix = suffix.findChild(node.letter, suffix == root ? root : null);
             } while (node.suffix == null);
 
             node.suffixOutput = node.suffix.output == null
@@ -182,7 +181,7 @@ class Dna {
 
             Node next;
             do {
-                next = node.children.get(letter);
+                next = node.findChild(letter, null);
                 if (next != null) node = next;
                 else if (node == root) break;
                 else node = node.suffix;
@@ -195,22 +194,84 @@ class Dna {
                 output.accept(node.output);
         }
     }
+}
 
-    private static class Node {
-        final Node parent;
-        final char letter;
-        final HashMap<Character, Node> children;
-        GenesHealth output;
-        Node suffix;
-        Node suffixOutput;
+class Node {
+    final Node parent;
+    final char letter;
+    private Node child; // optimization for single child
+    private HashMap<Character, Node> children;
+    GenesHealth output;
+    Node suffix;
+    Node suffixOutput;
 
-        Node(Node parent, char letter) {
-            this.parent = parent;
-            this.letter = letter;
+    Node(Node parent, char letter) {
+        this.parent = parent;
+        this.letter = letter;
+    }
+
+    Collection<Node> children() {
+        if (children != null) return children.values();
+        ArrayList<Node> r = new ArrayList<>(1);
+        if (child != null) r.add(child);
+        return r;
+    }
+
+    void addChild(Node child) {
+        if (this.children == null) {
+            if (this.child == null) {
+                this.child = child;
+                return;
+            }
             this.children = new HashMap<>();
+            this.children.put(this.child.letter, this.child);
+            this.child = null;
         }
+        this.children.put(child.letter, child);
+    }
+
+    Node findChild(char letter, Node defaultValue) {
+        if (child != null)
+            return child.letter == letter ? child : defaultValue;
+        return children != null ? children.getOrDefault(letter, defaultValue) : defaultValue;
     }
 }
 
-class GenesHealth extends TreeMap<Integer, Long> {
+class GenesHealth {
+    private int id; // single value optimization
+    private long health;
+    private TreeMap<Integer, Long> values;
+
+    GenesHealth(int id, long health) {
+        this.id = id;
+        this.health = health;
+    }
+
+    void put(int id, long health) {
+        getMap().put(id, health);
+    }
+
+    Map<Integer, Long> getMap() {
+        if (values != null)
+            return values;
+        this.values = new TreeMap<>();
+        this.values.put(this.id, this.health);
+        return values;
+    }
+
+    long health(int first, int last) {
+        if (values == null)
+            return id >= first && id <= last ? health : 0;
+        long r = 0;
+        for (long health : values.subMap(first, true, last, true).values()) r += health;
+        return r;
+    }
+
+    Set<Integer> keySet() {
+        if (values != null)
+            return values.keySet();
+        HashSet<Integer> ks = new HashSet<>();
+        ks.add(id);
+        return ks;
+    }
 }
