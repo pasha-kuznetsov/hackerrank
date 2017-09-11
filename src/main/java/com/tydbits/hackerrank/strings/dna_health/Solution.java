@@ -107,9 +107,11 @@ class DnaHealth {
 
 class Dna {
     private final Node root;
+    private final HashMap<String, Node> index; // short repeating genes optimization
 
     Dna() {
         this.root = new Node(null, '\0');
+        this.index = new HashMap<>();
     }
 
     Dna(String[] genes, long[] health) {
@@ -124,22 +126,33 @@ class Dna {
     }
 
     int parseGene(int id, String str, int start, long health) {
-        int i = start;
-        while (i < str.length() && !Character.isAlphabetic(str.charAt(i)))
-            ++i;
+        while (start < str.length() && !Character.isAlphabetic(str.charAt(start)))
+            ++start;
+
         char letter;
-        Node node = root;
+        String indexKey = getIndexKey(str, start);
+        Node node = index.getOrDefault(indexKey, root);
+        int i = node == root ? start : start + indexKey.length();
         for (; i < str.length() && Character.isAlphabetic(letter = str.charAt(i)); ++i) {
             Node next = node.findChild(letter, null);
             if (next == null)
                 node.addChild(next = new Node(node, letter));
             node = next;
+            if (i == start + indexKey.length() - 1)
+                index.put(indexKey, node);
         }
         if (node.output == null)
             node.output = new GenesHealth(id, health);
         else
             node.output.put(id, health);
         return i;
+    }
+
+    private String getIndexKey(String str, int start) {
+        int i = start;
+        while (i < Math.min(str.length(), start + 10) && Character.isAlphabetic(str.charAt(i)))
+            ++i;
+        return str.substring(start, i);
     }
 
     void setSuffixes() {

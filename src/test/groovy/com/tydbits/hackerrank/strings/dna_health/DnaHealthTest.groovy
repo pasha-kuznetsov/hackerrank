@@ -32,12 +32,12 @@ class DnaHealthTest extends Specification {
         def genes = []
         def health = []
         for (int i = 1; i < n; i++) {
-            genes.add(nChars(i, c.charAt(0)))
+            genes.add(nChars(i, c))
             health.add(i)
         }
         def strands = []
         for (int i = s; i >= 1; i--)
-            strands.add(nChars(i, c.charAt(0)))
+            strands.add(nChars(i, c))
         DnaHealth d
         def initDuration = benchmark {
             d = new DnaHealth([genes as String[], health as long[]] as Dna)
@@ -65,6 +65,45 @@ class DnaHealthTest extends Specification {
         // 'a' | 10240 | 1024 | 5000                 | 5000                   | 80000000
     }
 
+    @Unroll
+    def "test short key performance #n / #s"() {
+        given:
+        def genes = []
+        def health = []
+        for (int i = 1; i < n; i++) {
+            genes.add(nChars(s, c))
+            health.add(i)
+        }
+        def strands = []
+        for (int i = s; i >= 1; i--)
+            strands.add(nChars(s * 2, c))
+        DnaHealth d
+        def initDuration = benchmark {
+            d = new DnaHealth([genes as String[], health as long[]] as Dna)
+        }
+
+        when:
+        def searchDuration = benchmark {
+            for (String strand : strands)
+                d.processStrand(
+                        strand.length() / 3 as int,
+                        Math.max(strand.length(),
+                                strand.length() * 2 / 3 as int), strand)
+        }
+
+        then:
+        d.outputs < expectedOutputs
+        initDuration < expectedInitDuration
+        searchDuration < expectedSearchDuration
+
+        where:
+        c    | n     | s | expectedInitDuration | expectedSearchDuration | expectedOutputs
+        'ab' | 512   | 3 | 1000                 | 1000                   | 400000
+        'ab' | 1024  | 5 | 1000                 | 1000                   | 400000
+        'ab' | 10240 | 7 | 3000 /* ??? */       | 3000                   | 400000
+        // 'a' | 10240 | 1024 | 5000                 | 5000                   | 80000000
+    }
+
     def benchmark = { closure ->
         def start = System.currentTimeMillis()
         closure.call()
@@ -72,7 +111,7 @@ class DnaHealthTest extends Specification {
         return now - start
     }
 
-    private static String nChars(int n, char c) {
-        return (new char[n] as String).replace(0 as char, c)
+    private static String nChars(int n, String c) {
+        return (new char[n] as String).replace('\0', c)
     }
 }
