@@ -71,146 +71,146 @@ public class Solution {
             ++pos;
         return pos;
     }
+}
 
-    static class DnaHealth {
-        private final Dna dna;
-        private long minHealth = Long.MAX_VALUE;
-        private long maxHealth = Long.MIN_VALUE;
+class DnaHealth {
+    private final Dna dna;
+    private long minHealth = Long.MAX_VALUE;
+    private long maxHealth = Long.MIN_VALUE;
 
-        long outputs;
+    long outputs;
 
-        DnaHealth(Dna dna) { this.dna = dna; }
+    DnaHealth(Dna dna) { this.dna = dna; }
 
-        long minHealth() { return minHealth; }
-        long maxHealth() { return maxHealth; }
+    long minHealth() { return minHealth; }
+    long maxHealth() { return maxHealth; }
 
-        void processStrand(int first, int last, String d) {
-            processStrand(first, last, d, 0);
+    void processStrand(int first, int last, String d) {
+        processStrand(first, last, d, 0);
+    }
+
+    void processStrand(int first, int last, String d, int start) {
+        long health = getHealth(first, last, d, start);
+        if (health < minHealth) minHealth = health;
+        if (health > maxHealth) maxHealth = health;
+    }
+
+    private long getHealth(int first, int last, String d, int start) {
+        final long[] health = new long[] {0};
+        dna.search(d, start, (GenesHealth genesHealth) -> {
+            for (long geneHealth : genesHealth.subMap(first, true, last, true).values()) {
+                health[0] += geneHealth;
+                outputs += 1;
+            }
+        });
+        return health[0];
+    }
+}
+
+class Dna {
+    private final Node root;
+
+    Dna() {
+        this.root = new Node(null, '\0');
+    }
+
+    Dna(String[] genes, long[] health) {
+        this();
+        for (int i = 0; i < genes.length; ++i)
+            addGene(i, genes[i], health[i]);
+        setSuffixes();
+    }
+
+    private void addGene(int id, String str, long health) {
+        parseGene(id, str, 0, health);
+    }
+
+    int parseGene(int id, String str, int start, long health) {
+        int i = start;
+        while (i < str.length() && !Character.isAlphabetic(str.charAt(i)))
+            ++i;
+        char letter;
+        Node gene = root;
+        for (; i < str.length() && Character.isAlphabetic(letter = str.charAt(i)); ++i) {
+            Node next = gene.children.get(letter);
+            if (next == null)
+                gene.children.put(letter, next = new Node(gene, letter));
+            gene = next;
+        }
+        if (gene.output == null)
+            gene.output = new GenesHealth();
+        gene.output.put(id, health);
+        return i;
+    }
+
+    void setSuffixes() {
+        Queue<Node> queue = new ArrayDeque<>();
+
+        // `root` and its immediate children point back to `root`
+        root.suffix = root;
+        for (Node gene : root.children.values()) {
+            gene.suffix = root;
+            queue.addAll(gene.children.values());
         }
 
-        void processStrand(int first, int last, String d, int start) {
-            long health = getHealth(first, last, d, start);
-            if (health < minHealth) minHealth = health;
-            if (health > maxHealth) maxHealth = health;
-        }
+        // everyone else discovers their suffix from their parent
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+            queue.addAll(node.children.values());
 
-        private long getHealth(int first, int last, String d, int start) {
-            final long[] health = new long[] {0};
-            dna.search(d, start, (GenesHealth genesHealth) -> {
-                for (long geneHealth : genesHealth.subMap(first, true, last, true).values()) {
-                    health[0] += geneHealth;
-                    outputs += 1;
-                }
-            });
-            return health[0];
+            Node suffix = node.parent;
+            do {
+                suffix = suffix.suffix;
+                node.suffix = suffix.children.getOrDefault(node.letter, suffix == root ? root : null);
+            } while (node.suffix == null);
+
+            node.suffixOutput = node.suffix.output == null
+                    ? node.suffix.suffixOutput
+                    : node.suffix;
         }
     }
 
-    static class Dna {
-        final Node root;
+    // `predicate` returns `true` to stop searching
+    void search(String str, Consumer<GenesHealth> output) {
+        search(str, 0, output);
+    }
 
-        Dna() {
-            this.root = new Node(null, '\0');
-        }
+    void search(String str, int start, Consumer<GenesHealth> output) {
+        Node node = root;
+        for (int i = start; i < str.length(); ++i) {
+            char letter = str.charAt(i);
 
-        Dna(String[] genes, long[] health) {
-            this();
-            for (int i = 0; i < genes.length; ++i)
-                addGene(i, genes[i], health[i]);
-            setSuffixes();
-        }
+            Node next;
+            do {
+                next = node.children.get(letter);
+                if (next != null) node = next;
+                else if (node == root) break;
+                else node = node.suffix;
+            } while (next == null);
 
-        private void addGene(int id, String str, long health) {
-            parseGene(id, str, 0, health);
-        }
+            for (Node suffix = node.suffixOutput; suffix != null; suffix = suffix.suffixOutput)
+                output.accept(suffix.output);
 
-        private int parseGene(int id, String str, int start, long health) {
-            int i = start;
-            while (i < str.length() && !Character.isAlphabetic(str.charAt(i)))
-                ++i;
-            char letter;
-            Node gene = root;
-            for (; i < str.length() && Character.isAlphabetic(letter = str.charAt(i)); ++i) {
-                Node next = gene.children.get(letter);
-                if (next == null)
-                    gene.children.put(letter, next = new Node(gene, letter));
-                gene = next;
-            }
-            if (gene.output == null)
-                gene.output = new GenesHealth();
-            gene.output.put(id, health);
-            return i;
-        }
-
-        private void setSuffixes() {
-            Queue<Node> queue = new ArrayDeque<>();
-
-            // `root` and its immediate children point back to `root`
-            root.suffix = root;
-            for (Node gene : root.children.values()) {
-                gene.suffix = root;
-                queue.addAll(gene.children.values());
-            }
-
-            // everyone else discovers their suffix from their parent
-            while (!queue.isEmpty()) {
-                Node node = queue.poll();
-                queue.addAll(node.children.values());
-
-                Node suffix = node.parent;
-                do {
-                    suffix = suffix.suffix;
-                    node.suffix = suffix.children.getOrDefault(node.letter, suffix == root ? root : null);
-                } while (node.suffix == null);
-
-                node.suffixOutput = node.suffix.output == null
-                        ? node.suffix.suffixOutput
-                        : node.suffix;
-            }
-        }
-
-        // `predicate` returns `true` to stop searching
-        void search(String str, Consumer<GenesHealth> output) {
-            search(str, 0, output);
-        }
-
-        void search(String str, int start, Consumer<GenesHealth> output) {
-            Node node = root;
-            for (int i = start; i < str.length(); ++i) {
-                char letter = str.charAt(i);
-
-                Node next;
-                do {
-                    next = node.children.get(letter);
-                    if (next != null) node = next;
-                    else if (node == root) break;
-                    else node = node.suffix;
-                } while (next == null);
-
-                for (Node suffix = node.suffixOutput; suffix != null; suffix = suffix.suffixOutput)
-                    output.accept(suffix.output);
-
-                if (node.output != null)
-                    output.accept(node.output);
-            }
-        }
-
-        private static class Node {
-            final Node parent;
-            final char letter;
-            final HashMap<Character, Node> children;
-            GenesHealth output;
-            Node suffix;
-            Node suffixOutput;
-
-            Node(Node parent, char letter) {
-                this.parent = parent;
-                this.letter = letter;
-                this.children = new HashMap<>();
-            }
+            if (node.output != null)
+                output.accept(node.output);
         }
     }
 
-    static class GenesHealth extends TreeMap<Integer, Long> {
+    private static class Node {
+        final Node parent;
+        final char letter;
+        final HashMap<Character, Node> children;
+        GenesHealth output;
+        Node suffix;
+        Node suffixOutput;
+
+        Node(Node parent, char letter) {
+            this.parent = parent;
+            this.letter = letter;
+            this.children = new HashMap<>();
+        }
     }
+}
+
+class GenesHealth extends TreeMap<Integer, Long> {
 }

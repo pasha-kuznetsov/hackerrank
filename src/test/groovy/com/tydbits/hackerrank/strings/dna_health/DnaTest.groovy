@@ -8,7 +8,7 @@ class DnaTest extends Specification {
     @Unroll
     def "test search '#query' @ #genes"() {
         given:
-        def d = [genes as String[], new long[genes.size()]] as Solution.Dna
+        def d = [genes as String[], new long[genes.size()]] as Dna
 
         when:
         def results = []

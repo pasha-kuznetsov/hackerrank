@@ -8,7 +8,7 @@ class SolutionParserTest extends Specification {
     @Unroll
     def "test search '#query' @ #genes"() {
         given:
-        def d = new Solution.Dna()
+        def d = new Dna()
         Solution.parse(d, n, genes, health)
 
         when:
