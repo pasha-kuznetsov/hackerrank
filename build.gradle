@@ -1,0 +1,16 @@
+group 'com.tydbits.HackerRank'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+}
