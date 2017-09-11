@@ -69,28 +69,6 @@ public class Solution {
             setSuffixes();
         }
 
-        // `predicate` returns `true` to stop searching
-        void search(String str, Consumer<GenesHealth> output) {
-            Node node = root;
-            for (int i = 0; i < str.length(); ++i) {
-                char letter = str.charAt(i);
-
-                Node next;
-                do {
-                    next = node.children.get(letter);
-                    if (next != null) node = next;
-                    else if (node == root) break;
-                    else node = node.suffix;
-                } while (next == null);
-
-                for (Node suffix = node.suffixOutput; suffix != null; suffix = suffix.suffixOutput)
-                    output.accept(suffix.output);
-
-                if (node.output != null)
-                    output.accept(node.output);
-            }
-        }
-
         private void addGene(int id, String str, long health) {
             Node gene = root;
             for (int i = 0; i < str.length(); ++i) {
@@ -129,6 +107,28 @@ public class Solution {
                 node.suffixOutput = node.suffix.output == null
                         ? node.suffix.suffixOutput
                         : node.suffix;
+            }
+        }
+
+        // `predicate` returns `true` to stop searching
+        void search(String str, Consumer<GenesHealth> output) {
+            Node node = root;
+            for (int i = 0; i < str.length(); ++i) {
+                char letter = str.charAt(i);
+
+                Node next;
+                do {
+                    next = node.children.get(letter);
+                    if (next != null) node = next;
+                    else if (node == root) break;
+                    else node = node.suffix;
+                } while (next == null);
+
+                for (Node suffix = node.suffixOutput; suffix != null; suffix = suffix.suffixOutput)
+                    output.accept(suffix.output);
+
+                if (node.output != null)
+                    output.accept(node.output);
             }
         }
 

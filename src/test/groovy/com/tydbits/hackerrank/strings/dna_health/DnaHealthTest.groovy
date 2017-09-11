@@ -28,7 +28,6 @@ class DnaHealthTest extends Specification {
     }
 
     @Unroll
-    @Timeout(5)
     def "test performance #n / #s"() {
         given:
         def genes = []
@@ -37,22 +36,40 @@ class DnaHealthTest extends Specification {
             genes.add(nChars(i, c.charAt(0)))
             health.add(i)
         }
-        def d = new Solution.DnaHealth([genes as String[], health as long[]] as Solution.Dna)
+        def strands = []
+        for (int i = s; i >= 1; i--)
+            strands.add(nChars(i, c.charAt(0)))
+        Solution.DnaHealth d;
+        def initDuration = benchmark {
+            d = new Solution.DnaHealth([genes as String[], health as long[]] as Solution.Dna)
+        }
 
         when:
-        for (int i = s; i >= 1; i--)
-            d.processStrand(i / 3 as int, Math.max(i, i * 2 / 3 as int), nChars(i, c.charAt(0)))
+        def searchDuration = benchmark {
+            for (String strand : strands)
+                d.processStrand(
+                        strand.length() / 3 as int,
+                        Math.max(strand.length(),
+                                strand.length() * 2 / 3 as int), strand)
+        }
 
         then:
-        d.minHealth() == min
-        d.maxHealth() == max
+        initDuration < expectedInitDuration
+        searchDuration < expectedSearchDuration
 
         where:
-        c   | n     | s   | min | max
-        'a' | 512   | 128 | 1   | 259505
-        'a' | 1024  | 128 | 1   | 259505
-        'a' | 10240 | 128 | 1   | 259505
-        'a' | 10240 | 512 | 1   | 259505
+        c   | n     | s    | expectedInitDuration | expectedSearchDuration
+//        'a' | 512   | 128  | 1000                 | 1000
+//        'a' | 1024  | 128  | 1000                 | 1000
+//        'a' | 10240 | 128  | 3000                 | 3000
+        'a' | 10240 | 1024 | 5000                 | 5000
+    }
+
+    def benchmark = { closure ->
+        def start = System.currentTimeMillis()
+        closure.call()
+        def now = System.currentTimeMillis()
+        return now - start
     }
 
     private static String nChars(int n, char c) {
