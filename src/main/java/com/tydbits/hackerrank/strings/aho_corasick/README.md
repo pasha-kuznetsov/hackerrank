@@ -3,10 +3,8 @@ Aho–Corasick algorithm
 
 [https://en.wikipedia.org/wiki/Aho–Corasick_algorithm](https://en.wikipedia.org/wiki/Aho–Corasick_algorithm)
 
-Determining DNA Health
-----------------------
-
-https://www.hackerrank.com/challenges/determining-dna-health/problem
+"Determining DNA Health" at [HackerRank](https://www.hackerrank.com/challenges/determining-dna-health)
+----------------------------------------
 
 DNA is a nucleic acid present in the bodies of living things. Each piece of DNA contains a number of genes,
 some of which are beneficial and increase the DNA's total health. Each gene has a health value,

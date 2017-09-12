@@ -29,7 +29,7 @@ public class Solution {
     }
 }
 
-// See readme.md for implementation comments.
+// See README.md for implementation comments.
 class LexicographicallyMinimal {
     private final String s1;
     private final String s2;

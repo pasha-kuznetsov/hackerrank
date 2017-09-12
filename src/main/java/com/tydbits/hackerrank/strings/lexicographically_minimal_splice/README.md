@@ -1,10 +1,8 @@
 Lexicographically Minimal Splice
 ================================
 
-A challenge found at https://www.hackerrank.com/challenges/morgan-and-a-string
-
-Morgan and a String
--------------------
+"Morgan and a String" at [HackerRank](https://www.hackerrank.com/challenges/morgan-and-a-string)
+-------------------------------------
 
 Jack and Daniel are friends. Both of them like letters, especially upper-case ones. 
 They are cutting upper-case letters from newspapers, and each one of them has their 
