@@ -1,4 +1,4 @@
-package com.tydbits.hackerrank.strings.dna_health
+package com.tydbits.hackerrank.strings.aho_corasick
 
 import spock.lang.Specification
 import spock.lang.Unroll

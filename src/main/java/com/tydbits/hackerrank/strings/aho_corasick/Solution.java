@@ -1,7 +1,7 @@
 // Determining DNA Health
 // https://www.hackerrank.com/challenges/determining-dna-health/problem
 
-package com.tydbits.hackerrank.strings.dna_health;
+package com.tydbits.hackerrank.strings.aho_corasick;
 
 import java.io.BufferedReader;
 import java.io.IOException;

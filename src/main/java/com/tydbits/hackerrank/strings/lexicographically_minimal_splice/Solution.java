@@ -2,7 +2,7 @@
 // "Morgan and a String"
 // https://www.hackerrank.com/challenges/morgan-and-a-string
 
-package com.tydbits.hackerrank.strings.lexicographically_minimal;
+package com.tydbits.hackerrank.strings.lexicographically_minimal_splice;
 
 import java.io.BufferedReader;
 import java.io.IOException;

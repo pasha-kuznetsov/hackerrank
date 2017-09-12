@@ -1,4 +1,4 @@
-package com.tydbits.hackerrank.strings.lexicographically_minimal
+package com.tydbits.hackerrank.strings.lexicographically_minimal_splice
 
 import spock.lang.Specification
 import spock.lang.Unroll
