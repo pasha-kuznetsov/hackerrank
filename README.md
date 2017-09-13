@@ -7,11 +7,9 @@ Random HackerRank challenges
 ### Strings
 
 * [Aho-Corasick](src/main/java/com/tydbits/hackerrank/strings/aho_corasick)
-    with [Tests](src/test/groovy/com/tydbits/hackerrank/strings/aho_corasick),
     aka "Determining DNA Health" at [HR](https://www.hackerrank.com/challenges/determining-dna-health)
     `HARD`
 * [Lexicographically Minimal Splice](src/main/java/com/tydbits/hackerrank/strings/lexicographically_minimal_splice)
-    with [Tests](src/test/java/com/tydbits/hackerrank/strings/lexicographically_minimal_splice),
     aka "Morgan and a String" at [HR](https://www.hackerrank.com/challenges/morgan-and-a-string)
     `EXPERT`
 
