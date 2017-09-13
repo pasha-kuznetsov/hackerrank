@@ -28,13 +28,14 @@ union of the set of strings recognized by `R1` and `R2`.
 the empty string and the concatenation of an arbitrary number of copies 
 of any string recognized by `R1`.
 
-### Task
- 
 Given a regular expression and an integer, `L`, count how many strings of length `L` 
 are recognized by it.
 
-### Sample Input
+## Tests
 
+See [Groovy Spock Tests](../../../../../../../test/groovy/com/tydbits/hackerrank/strings/regex_count)
+
+Sample Input
 ```
 3  
 ((ab)|(ba)) 2  
@@ -42,8 +43,7 @@ are recognized by it.
 ((a*)(b(a*))) 100
 ```
 
-### Sample Output
-
+Sample Output
 ```
 2
 32

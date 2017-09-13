@@ -1,8 +1,6 @@
-Lexicographically Minimal Splice
-================================
+# Lexicographically Minimal Splice
 
-"Morgan and a String" at [HackerRank](https://www.hackerrank.com/challenges/morgan-and-a-string)
--------------------------------------
+## "Morgan and a String" at [HackerRank](https://www.hackerrank.com/challenges/morgan-and-a-string)
 
 Jack and Daniel are friends. Both of them like letters, especially upper-case ones. 
 They are cutting upper-case letters from newspapers, and each one of them has their 
@@ -15,15 +13,13 @@ of the stack.
 
 Also, Morgan wants to use all the letters in the boys' collections.
 
-Input Format
-------------
+### Input Format
 
 The first line contains the number of test cases, `T`. 
 Every next two lines have such format: the first line contains string `s1`, 
 and the second line contains string `s2`.
 
-Constraints
------------
+### Constraints
 
 ```
 T:    [1, 5]
@@ -31,8 +27,26 @@ T:    [1, 5]
 |s2|: [1, 10^5]
 ```
 
-Implementation
-==============
+## Tests
+
+See [Groovy Spock Tests](../../../../../../../test/groovy/com/tydbits/hackerrank/strings/lexicographically_minimal_splice)
+
+Sample Input
+```
+2
+JACK
+DANIEL
+ABACABA
+ABACABA
+```
+
+Sample Output
+```
+DAJACKNIEL
+AABABACABACABA
+```
+
+## Implementation
 
 While the current chars in the strings are different, taking the one which is less,
 clearly results in lexicographically minimal string. 

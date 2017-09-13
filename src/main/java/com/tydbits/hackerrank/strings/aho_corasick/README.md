@@ -1,10 +1,8 @@
-Aho–Corasick algorithm
-======================
+# Aho–Corasick algorithm
 
-[https://en.wikipedia.org/wiki/Aho–Corasick_algorithm](https://en.wikipedia.org/wiki/Aho–Corasick_algorithm)
+See Aho–Corasick algorithm description at [Wikipedia](https://en.wikipedia.org/wiki/Aho–Corasick_algorithm)
 
-"Determining DNA Health" at [HackerRank](https://www.hackerrank.com/challenges/determining-dna-health)
-----------------------------------------
+## "Determining DNA Health" at [HackerRank](https://www.hackerrank.com/challenges/determining-dna-health)
 
 DNA is a nucleic acid present in the bodies of living things. Each piece of DNA contains a number of genes,
 some of which are beneficial and increase the DNA's total health. Each gene has a health value,
@@ -27,3 +25,23 @@ Given the following:
 Find and print the respective total healths of the unhealthiest (minimum total health)
 and healthiest (maximum total health) strands of DNA as two space-separated values
 on a single line.
+
+## Tests
+ 
+See [Groovy Spock Tests](../../../../../../../test/groovy/com/tydbits/hackerrank/strings/aho_corasick)
+
+Sample Input
+```
+6
+a b c aa d b
+1 2 3 4 5 6
+3
+1 5 caaab
+0 4 xyz
+2 4 bcdybc
+```
+
+Sample Output
+```
+0 19
+```
