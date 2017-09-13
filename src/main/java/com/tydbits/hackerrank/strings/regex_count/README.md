@@ -1,5 +1,7 @@
 # Regular Expressions
 
+> **See also [Tests](../../../../../../../test/groovy/com/tydbits/hackerrank/strings/regex_count)**
+
 ## "Count Strings" at [HR](https://www.hackerrank.com/challenges/count-strings)
 
 A regular expression is used to describe a set of strings. 
@@ -31,10 +33,6 @@ of any string recognized by `R1`.
 Given a regular expression and an integer, `L`, count how many strings of length `L` 
 are recognized by it.
 
-## Tests
-
-See [Groovy Spock Tests](../../../../../../../test/groovy/com/tydbits/hackerrank/strings/regex_count)
-
 Sample Input
 ```
 3  
@@ -49,3 +47,19 @@ Sample Output
 32
 100
 ```
+
+## Implementation
+
+`((ab)|(ba))`:
+
+![((ab)|(ba))](resources/diagram-1.png "((ab)|(ba))")
+
+`((a|b)*)`:
+
+![((a|b)*)](resources/diagram-2.png "((a|b)*)")
+
+`((a*)(b(a*)))`:
+
+![((a*)(b(a*)))](resources/diagram-3.png "((a*)(b(a*)))")
+
+

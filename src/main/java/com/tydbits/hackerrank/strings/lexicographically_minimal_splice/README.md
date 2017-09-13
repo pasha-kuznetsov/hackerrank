@@ -1,5 +1,7 @@
 # Lexicographically Minimal Splice
 
+> **See also [Tests](../../../../../../../test/groovy/com/tydbits/hackerrank/strings/lexicographically_minimal_splice)**
+
 ## "Morgan and a String" at [HackerRank](https://www.hackerrank.com/challenges/morgan-and-a-string)
 
 Jack and Daniel are friends. Both of them like letters, especially upper-case ones. 
@@ -13,13 +15,13 @@ of the stack.
 
 Also, Morgan wants to use all the letters in the boys' collections.
 
-### Input Format
+**Input Format**
 
 The first line contains the number of test cases, `T`. 
 Every next two lines have such format: the first line contains string `s1`, 
 and the second line contains string `s2`.
 
-### Constraints
+**Constraints**
 
 ```
 T:    [1, 5]
@@ -27,11 +29,7 @@ T:    [1, 5]
 |s2|: [1, 10^5]
 ```
 
-## Tests
-
-See [Groovy Spock Tests](../../../../../../../test/groovy/com/tydbits/hackerrank/strings/lexicographically_minimal_splice)
-
-Sample Input
+**Sample Input**
 ```
 2
 JACK
@@ -40,7 +38,7 @@ ABACABA
 ABACABA
 ```
 
-Sample Output
+**Sample Output**
 ```
 DAJACKNIEL
 AABABACABACABA

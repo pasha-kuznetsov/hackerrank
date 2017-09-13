@@ -1,6 +1,6 @@
 # Aho–Corasick algorithm
 
-See Aho–Corasick algorithm description at [Wikipedia](https://en.wikipedia.org/wiki/Aho–Corasick_algorithm)
+> **See also [Tests](../../../../../../../test/groovy/com/tydbits/hackerrank/strings/aho_corasick)**
 
 ## "Determining DNA Health" at [HackerRank](https://www.hackerrank.com/challenges/determining-dna-health)
 
@@ -26,11 +26,7 @@ Find and print the respective total healths of the unhealthiest (minimum total h
 and healthiest (maximum total health) strands of DNA as two space-separated values
 on a single line.
 
-## Tests
- 
-See [Groovy Spock Tests](../../../../../../../test/groovy/com/tydbits/hackerrank/strings/aho_corasick)
-
-Sample Input
+**Sample Input**
 ```
 6
 a b c aa d b
@@ -41,7 +37,11 @@ a b c aa d b
 2 4 bcdybc
 ```
 
-Sample Output
+**Sample Output**
 ```
 0 19
 ```
+
+## Implementation
+
+See Aho–Corasick algorithm description at [Wikipedia](https://en.wikipedia.org/wiki/Aho–Corasick_algorithm)
