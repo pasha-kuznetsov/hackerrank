@@ -42,36 +42,31 @@ class Regex {
         private Expression sequence() {
             Expression expr = new Expression();
             for (; ; ) {
-                switch (peek()) {
+                char c = take();
+                switch (c) {
                     case 'a':
-                    case 'b':
-                        Node node = expr.end = new Node();
-                        expr.start.edges.add(new Edge(take(), node));
-                        break;
-                    case '(':
-                        take();
-                        Expression nested = sequence();
-                        if (take() != ')')
-                            throw syntaxError(") expected");
-                        if (expr.start == expr.end) {
-                            expr = nested;
-                        } else {
-                            expr.end.edges.add(new Edge(empty, nested.start));
-                            expr.end = nested.end;
-                        }
-                        break;
-                    case '|':
-                        take();
-                        expr = pipe(expr);
-                        break;
-                    case '*':
-                        take();
-                        expr = star(expr);
-                        break;
-                    default:
-                        return expr;
+                    case 'b': literal(expr, c); break;
+                    case '(': expr = parenthesis(expr); break;
+                    case '|': expr = pipe(expr); break;
+                    case '*': expr = star(expr); break;
+                    default: putback(); return expr;
                 }
             }
+        }
+
+        private void literal(Expression expr, char c) {
+            Node node = expr.end = new Node();
+            expr.start.edges.add(new Edge(c, node));
+        }
+
+        private Expression parenthesis(Expression expr) {
+            Expression nested = sequence();
+            if (take() != ')')
+                throw syntaxError(") expected");
+            if (expr.start == expr.end) return nested;
+            expr.end.edges.add(new Edge(empty, nested.start));
+            expr.end = nested.end;
+            return expr;
         }
 
         private IllegalStateException syntaxError(String error) {
@@ -107,6 +102,10 @@ class Regex {
 
         private char take() {
             return skipWs() ? regex.charAt(pos++) : empty;
+        }
+
+        private void putback() {
+            if (pos >= 0) --pos;
         }
 
         private boolean skipWs() {
