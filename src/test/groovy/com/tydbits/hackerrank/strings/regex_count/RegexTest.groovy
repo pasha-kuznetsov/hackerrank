@@ -53,11 +53,11 @@ class RegexTest extends Specification {
                                    -> 10'''.trim()
     }
 
-    def dump(Regex regex) {
+    String dump(Regex regex) {
         return dumpNode(new HashMap<>(), regex.root, 0).trim()
     }
 
-    private String dumpNode(HashMap<Regex.Node, Integer> map, Regex.Node node, int level) {
+    String dumpNode(map, Regex.Node node, int level) {
         Integer id = map.get(node)
         if (id != null)
             return new StringBuilder().append(id).append('\n')
@@ -70,18 +70,18 @@ class RegexTest extends Specification {
         return out.toString()
     }
 
-    private String dumpEdge(HashMap<Node, Integer> map, Regex.Edge edge, int level) {
-        StringBuilder out = new StringBuilder();
+    String dumpEdge(map, Regex.Edge edge, int level) {
+        StringBuilder out = new StringBuilder()
         appendIndent(out, level)
         out.append(dumpValue(edge)).append(" -> ").append(dumpNode(map, edge.node, level + 2))
-        return out.toString();
+        return out.toString()
     }
 
-    private static String dumpValue(Regex.Edge edge) {
-        return new String(edge.value).replace('\0', '');
+    String dumpValue(Regex.Edge edge) {
+        return new String(edge.value).replace('\0', '')
     }
 
-    private static void appendIndent(StringBuilder out, int level) {
+    void appendIndent(StringBuilder out, int level) {
         out.append(new String(new char[level]).replace('\0', ' '))
     }
 }
