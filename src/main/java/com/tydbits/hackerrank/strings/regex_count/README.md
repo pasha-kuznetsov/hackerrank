@@ -50,6 +50,8 @@ Sample Output
 
 ## Implementation
 
+[Thompson's construction](https://en.wikipedia.org/wiki/Thompson%27s_construction):
+
 `((ab)|(ba))`:
 
 ![((ab)|(ba))](resources/diagram-1.png "((ab)|(ba))")
