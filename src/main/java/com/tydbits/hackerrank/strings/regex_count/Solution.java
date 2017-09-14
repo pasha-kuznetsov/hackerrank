@@ -91,13 +91,9 @@ class Regex {
             return expr;
         }
 
-        private class Expression {
+        private static class Expression {
             Node start = new Node();
             Node end = start;
-        }
-
-        private char peek() {
-            return skipWs() ? regex.charAt(pos) : empty;
         }
 
         private char take() {
