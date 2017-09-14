@@ -39,6 +39,11 @@ class Regex {
             return sequence().start;
         }
 
+        private static class Expression {
+            Node start = new Node();
+            Node end = start;
+        }
+
         private Expression sequence() {
             Expression expr = new Expression();
             for (; ; ) {
@@ -89,11 +94,6 @@ class Regex {
             inner.end.edges.add(new Edge(empty, inner.start));
             inner.end.edges.add(new Edge(empty, expr.end = new Node()));
             return expr;
-        }
-
-        private static class Expression {
-            Node start = new Node();
-            Node end = start;
         }
 
         private char take() {
