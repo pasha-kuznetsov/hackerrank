@@ -13,8 +13,9 @@ class RegexCountTest extends Specification {
         where:
         regex           | len | expectedResult
         "((ab)|(ba))"   | 2   | 2
-        "((a*)|(b*))"   | 2   | 2
+        "(a*)"          | 2   | 1
         "((a*)*)"       | 2   | 1
+        "((a*)|(b*))"   | 2   | 2
         "((a|b)*)"      | 5   | 32
         "((a*)(b(a*)))" | 100 | 100
     }
