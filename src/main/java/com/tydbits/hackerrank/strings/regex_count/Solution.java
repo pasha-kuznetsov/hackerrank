@@ -16,16 +16,31 @@ public class Solution {
 }
 
 class Regex {
-    static char empty = '\0';
+    private static char empty = '\0';
 
-    final Node root;
+    private final Node root;
 
     Regex(String regex) {
         this.root = new Parser(regex).parse();
     }
 
     long count(int len) {
-        return 0;
+        return count(root, len);
+    }
+
+    private long count(Node node, int len) {
+        if (len < 0)
+            return 0;
+        if (node.edges.isEmpty())
+            return len == 0 ? 1 : 0;
+        Long count = node.count.get(len);
+        if (count != null)
+            return count;
+        count = 0L;
+        for (Edge edge : node.edges)
+            count += count(edge.node, edge.value == empty ? len : len - 1);
+        node.count.put(len, count);
+        return count;
     }
 
     private static class Parser {
