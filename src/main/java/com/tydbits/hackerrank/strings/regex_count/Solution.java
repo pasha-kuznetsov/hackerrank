@@ -62,8 +62,7 @@ class Regex {
         }
 
         private void literal(Expression expr, char c) {
-            Node node = expr.end = new Node();
-            expr.start.edges.add(new Edge(c, node));
+            expr.end.edges.add(new Edge(c, expr.end = new Node()));
         }
 
         private Expression parenthesis(Expression expr) {

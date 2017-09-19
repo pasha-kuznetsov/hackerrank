@@ -17,12 +17,12 @@ class RegexTest extends Specification {
 1
    -> 2
       a -> 3
-      b -> 4
-           -> 5
+          b -> 4
+               -> 5
    -> 6
       b -> 7
-      a -> 8
-           -> 5'''.trim()
+          a -> 8
+               -> 5'''.trim()
 
         "((a|b)*)"      | '''
 1
