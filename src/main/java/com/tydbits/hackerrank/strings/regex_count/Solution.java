@@ -7,7 +7,9 @@ import java.util.*;
 
 public class Solution {
     public static void main(String[] args) {
-        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        Scanner sc = new Scanner(System.in);
+        for (int n = sc.nextInt(); n > 0; --n)
+            System.out.println(count(sc.next(), sc.nextInt()));
     }
 
     static long count(String regex, int len) {
