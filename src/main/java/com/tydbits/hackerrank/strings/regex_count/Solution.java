@@ -24,7 +24,7 @@ public class Solution {
         Long count = node.count.get(len);
         if (count != null)
             return count;
-        count = 0L;
+        node.count.put(len, count = 0L); // prevent looping on ((a*)*)
         for (Regex.Edge edge : node.edges)
             count += count(edge.node, edge.value == Regex.empty ? len : len - 1);
         node.count.put(len, count);
