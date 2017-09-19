@@ -3,12 +3,12 @@ package com.tydbits.hackerrank.strings.regex_count
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class RegexTest extends Specification {
+class RegexParserTest extends Specification {
 
     @Unroll
     def "test #regex"() {
         expect:
-        dump(new Regex(regex)) == expectedResult
+        dump(new Regex.Parser(regex).parse()) == expectedResult
 
         where:
         regex           | expectedResult
@@ -54,8 +54,8 @@ class RegexTest extends Specification {
    -> 4'''.trim()
     }
 
-    String dump(Regex regex) {
-        return dumpNode(new HashMap<>(), regex.root, 0).trim()
+    String dump(Regex.Node root) {
+        return dumpNode(new HashMap<>(), root, 0).trim()
     }
 
     String dumpNode(map, Regex.Node node, int level) {

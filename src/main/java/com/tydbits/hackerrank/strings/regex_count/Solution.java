@@ -11,24 +11,10 @@ public class Solution {
     }
 
     static long count(String regex, int len) {
-        return new Regex(regex).count(len);
-    }
-}
-
-class Regex {
-    private static char empty = '\0';
-
-    private final Node root;
-
-    Regex(String regex) {
-        this.root = new Parser(regex).parse();
+        return count(new Regex(regex).root, len);
     }
 
-    long count(int len) {
-        return count(root, len);
-    }
-
-    private long count(Node node, int len) {
+    private static long count(Regex.Node node, int len) {
         if (len < 0)
             return 0;
         if (node.edges.isEmpty())
@@ -37,13 +23,23 @@ class Regex {
         if (count != null)
             return count;
         count = 0L;
-        for (Edge edge : node.edges)
-            count += count(edge.node, edge.value == empty ? len : len - 1);
+        for (Regex.Edge edge : node.edges)
+            count += count(edge.node, edge.value == Regex.empty ? len : len - 1);
         node.count.put(len, count);
         return count;
     }
+}
 
-    private static class Parser {
+class Regex {
+    static char empty = '\0';
+
+    final Node root;
+
+    Regex(String regex) {
+        this.root = new Parser(regex).parse();
+    }
+
+    static class Parser {
         private final String regex;
         private int pos;
 
@@ -52,7 +48,7 @@ class Regex {
             this.pos = 0;
         }
 
-        private Node parse() {
+        Node parse() {
             return sequence().start;
         }
 
@@ -83,15 +79,11 @@ class Regex {
         private Expression parenthesis(Expression expr) {
             Expression nested = sequence();
             if (take() != ')')
-                throw syntaxError(") expected");
+                throw new IllegalStateException("syntax error: " + ") expected");
             if (expr.start == expr.end) return nested;
             expr.end.edges.add(new Edge(empty, nested.start));
             expr.end = nested.end;
             return expr;
-        }
-
-        private IllegalStateException syntaxError(String error) {
-            return new IllegalStateException("syntax error: " + error);
         }
 
         private Expression pipe(Expression first) {
