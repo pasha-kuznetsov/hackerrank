@@ -24,7 +24,6 @@ class RegexTest extends Specification {
       a -> 8
            -> 5'''.trim()
 
-
         "((a|b)*)"      | '''
 1
    -> 2
@@ -35,8 +34,8 @@ class RegexTest extends Specification {
                    -> 6
        -> 7
           b -> 8
-               -> 5'''.trim()
-
+               -> 5
+   -> 6'''.trim()
 
         "((a*)(b(a*)))" | '''
 1
@@ -50,7 +49,9 @@ class RegexTest extends Specification {
                            -> 8
                               a -> 9
                                    -> 8
-                                   -> 10'''.trim()
+                                   -> 10
+                           -> 10
+   -> 4'''.trim()
     }
 
     String dump(Regex regex) {

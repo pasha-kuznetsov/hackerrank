@@ -6,14 +6,12 @@ package com.tydbits.hackerrank.strings.regex_count;
 import java.util.*;
 
 public class Solution {
-
     public static void main(String[] args) {
         /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
     }
 
     static long count(String regex, int len) {
-        Regex re = new Regex(regex);
-        return 0;
+        return new Regex(regex).count(len);
     }
 }
 
@@ -24,6 +22,10 @@ class Regex {
 
     Regex(String regex) {
         this.root = new Parser(regex).parse();
+    }
+
+    long count(int len) {
+        return 0;
     }
 
     private static class Parser {
@@ -93,6 +95,7 @@ class Regex {
             expr.start.edges.add(new Edge(empty, inner.start));
             inner.end.edges.add(new Edge(empty, inner.start));
             inner.end.edges.add(new Edge(empty, expr.end = new Node()));
+            expr.start.edges.add(new Edge(empty, expr.end));
             return expr;
         }
 
@@ -112,6 +115,7 @@ class Regex {
 
     static class Node {
         final ArrayList<Edge> edges = new ArrayList<>();
+        final HashMap<Integer, Long> count = new HashMap<>();
     }
 
     static class Edge {
