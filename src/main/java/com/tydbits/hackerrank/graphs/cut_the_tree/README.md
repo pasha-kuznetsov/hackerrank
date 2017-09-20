@@ -20,7 +20,6 @@ as your answer.
 
 **Notes:**
 * The tree is always rooted at vertex `1`.
-* Input is given in terms of an undirected graph.
 
 **Sample Input**
 ```
@@ -37,3 +36,12 @@ as your answer.
 ```
 400
 ```
+
+## Implementation
+
+The trick is that the input is given as an undirected graph,
+so we cannot easily infer which of an edge's nodes is a parent,
+hence treat it as a graph, where the tree is discovered while iteration:  
+* Process input, recording adjacent nodes.
+* DFS recording sum of the respective subtrees `sum(ti)`.
+* Iterate through the nodes to find the min `d[u<->v]`.

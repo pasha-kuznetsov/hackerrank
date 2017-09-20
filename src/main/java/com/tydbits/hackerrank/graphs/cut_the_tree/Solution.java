@@ -16,13 +16,28 @@ public class Solution {
             nodes[i] = new Node(scanner.nextInt());
         for (int i = 0; i < nodes.length - 1; ++i)
             addAdjacent(nodes[scanner.nextInt() - 1], nodes[scanner.nextInt() - 1]);
-        nodes[0].addChildren(null);
+        addChildren(nodes[0], null);
         return minDiff(nodes);
+    }
+
+    static class Node {
+        int sum;
+        ArrayList<Node> adjacent = new ArrayList<>();
+        Node(int data) { this.sum = data; }
     }
 
     private static void addAdjacent(Node node1, Node node2) {
         node1.adjacent.add(node2);
         node2.adjacent.add(node1);
+    }
+
+    private static int addChildren(Node node, Node parent) {
+        for (Node adj : node.adjacent) {
+            if (adj != parent) {
+                node.sum += addChildren(adj, node);
+            }
+        }
+        return node.sum;
     }
 
     private static int minDiff(Node[] nodes) {
@@ -36,23 +51,5 @@ public class Solution {
                 min = diff;
         }
         return min;
-    }
-
-    static class Node {
-        ArrayList<Node> adjacent = new ArrayList<>();
-        int sum;
-
-        Node(int data) {
-            this.sum = data;
-        }
-
-        int addChildren(Node parent) {
-            for (Node adj : adjacent) {
-                if (adj != parent) {
-                    sum += adj.addChildren(this);
-                }
-            }
-            return sum;
-        }
     }
 }
