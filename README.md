@@ -12,6 +12,9 @@ Random HackerRank challenges
 * [Lexicographically Minimal Splice](src/main/java/com/tydbits/hackerrank/strings/lexicographically_minimal_splice)
     aka "Morgan and a String" at [HR](https://www.hackerrank.com/challenges/morgan-and-a-string)
     `EXPERT`
+* [Regex Count](src/main/java/com/tydbits/hackerrank/strings/regex_count)
+    aka "Count Strings" at [HR](https://www.hackerrank.com/challenges/count-strings)
+    `HARD`
 
 ## C++
 

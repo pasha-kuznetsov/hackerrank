@@ -50,7 +50,7 @@ Sample Output
 
 ## Implementation
 
-[Thompson's construction](https://en.wikipedia.org/wiki/Thompson%27s_construction):
+### [Thompson's construction](https://en.wikipedia.org/wiki/Thompson%27s_construction)
 
 `((ab)|(ba))`:
 
@@ -64,4 +64,10 @@ Sample Output
 
 ![((a*)(b(a*)))](resources/diagram-3.png "((a*)(b(a*)))")
 
+### [DFA Subset Construction](https://en.wikipedia.org/wiki/Powerset_construction)
 
+### [Matrix Exponentiation](http://mathworld.wolfram.com/MatrixPower.html)
+
+Using property of adjacency matrices `m` that given the corresponding
+power `p = m ^ n` a value `p[i][j]` yields the number of walks
+of length `n` from `i` to `j`.
