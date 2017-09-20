@@ -16,6 +16,12 @@ Random HackerRank challenges
     aka "Count Strings" at [HR](https://www.hackerrank.com/challenges/count-strings)
     `HARD`
 
+### Graphs
+
+* [Cut the Tree](src/main/java/com/tydbits/hackerrank/graphs/cut_the_tree)
+   aka "Cut the Tree" at [HR](https://www.hackerrank.com/challenges/cut-the-tree)
+   `MEDIUM`
+
 ## C++
 
 ### Sorting
