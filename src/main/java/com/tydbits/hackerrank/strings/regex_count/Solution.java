@@ -13,18 +13,78 @@ public class Solution {
     }
 
     static long count(String regex, int len) {
-        return count(new Regex(regex).root, len);
+        return len == 0 ? 0 : new RegexCounter(new Regex(regex)).count(len);
+    }
+}
+
+class RegexCounter {
+    private final long[][] adjacencyMatrix;
+    private final ArrayList<Integer> finalStates;
+
+    RegexCounter(Regex regex) {
+        Map<Regex.Node, Integer> indexes = new HashMap<>();
+        this.adjacencyMatrix = new long[regex.nodes.length][regex.nodes.length];
+        this.finalStates = new ArrayList<>();
+        for (Regex.Node node : regex.nodes) {
+            int index = getIndex(indexes, node);
+            for (Regex.Edge edge : node.edges) {
+                int next = getIndex(indexes, edge.node);
+                adjacencyMatrix[index][next] = 1;
+            }
+        }
     }
 
-    private static long count(Regex.Node node, int len) {
-        if (len == 0) return node.isFinal ? 1 : 0;
-        Long cached = node.count.get(len);
-        if (cached != null) return cached;
+    private int getIndex(Map<Regex.Node, Integer> indexes, Regex.Node node) {
+        Integer index = indexes.get(node);
+        if (index == null) {
+            indexes.put(node, index = indexes.size());
+            if (node.isFinal)
+                finalStates.add(index);
+        }
+        return index;
+    }
+
+    long count(int len) {
+        long[][] m = new MatrixPower(adjacencyMatrix).power(len);
         long count = 0;
-        for (Regex.Edge edge : node.edges)
-            count += count(edge.node, edge.value == Regex.e ? len : len - 1);
-        node.count.put(len, count);
+        for (int finalState : finalStates)
+            count = (count + m[0][finalState]) % 1000000007L;
         return count;
+    }
+}
+
+class MatrixPower {
+    private final long[][] matrix;
+    private final Map<Integer, long[][]> powers;
+
+    MatrixPower(long[][] matrix) {
+        this.matrix = matrix;
+        this.powers = new HashMap<>();
+    }
+
+    long[][] power(int p) {
+        if (p == 1) return matrix;
+        long[][] result = powers.get(p);
+        if (result != null)
+            return result;
+        result = power(p / 2);
+        powers.put(p / 2 * 2, result = multiply(result, result));
+        if (p % 2 > 0)
+            powers.put(p, result = multiply(result, power(p % 2)));
+        return result;
+    }
+
+    private long[][] multiply(long[][] a, long[][] b) {
+        long[][] m = new long[a.length][a.length];
+        for (int i = 0; i < a.length; ++i) {
+            for (int j = 0; j < a.length; ++j) {
+                long sum = 0;
+                for (int k = 0; k < a.length; ++k)
+                    sum = (sum + a[i][k] * b[k][j]) % 1000000007L;
+                m[i][j] = sum;
+            }
+        }
+        return m;
     }
 }
 
@@ -32,11 +92,14 @@ class Regex {
     static char e = '\0';
 
     final Node root;
+    final Node[] nodes;
 
     Regex(String regex) {
         Parser parser = new Parser(regex);
         parser.parse();
-        this.root = new SubsetConstruction(parser.expr.start, parser.expr.end).dfa();
+        SubsetConstruction subset = new SubsetConstruction(parser.expr.start, parser.expr.end);
+        this.nodes = subset.dfa();
+        this.root = nodes[0];
     }
 
     static class SubsetConstruction {
@@ -52,7 +115,7 @@ class Regex {
             this.dfaRoot = addState(eClosure(nfaRoot)).dfa;
         }
 
-        Node dfa() {
+        Node[] dfa() {
             while (!queue.isEmpty()) {
                 State state = queue.poll();
                 for (char c : new char[]{'a', 'b'}) {
@@ -65,7 +128,15 @@ class Regex {
                     state.dfa.edges.add(new Edge(c, dfaNext));
                 }
             }
-            return dfaRoot;
+            return getNodes();
+        }
+
+        private Node[] getNodes() {
+            ArrayList<Node> nodes = new ArrayList<>();
+            nodes.add(dfaRoot);
+            for (Node node : dfaMap.values())
+                if (node != dfaRoot) nodes.add(node);
+            return nodes.toArray(new Node[nodes.size()]);
         }
 
         private State addState(Set<Node> nfa) {
@@ -78,12 +149,8 @@ class Regex {
 
         static class State {
             final Set<Node> nfa;
-            final Node dfa;
-
-            State(Set<Node> nfa) {
-                this.nfa = nfa;
-                this.dfa = new Node();
-            }
+            final Node dfa = new Node();
+            State(Set<Node> nfa) { this.nfa = nfa; }
         }
 
         private Set<Node> eClosure(Node node) {
@@ -200,7 +267,6 @@ class Regex {
 
     static class Node {
         final ArrayList<Edge> edges = new ArrayList<>();
-        final HashMap<Integer, Long> count = new HashMap<>();
         boolean isFinal;
     }
 
