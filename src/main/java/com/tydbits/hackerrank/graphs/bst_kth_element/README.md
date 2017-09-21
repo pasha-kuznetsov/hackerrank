@@ -1,9 +1,9 @@
-# Binary Search Trees: add, delete, K<sup>th</sup> largest
+# Binary Search Trees: add, delete, k<sup>th</sup> largest
 
 > **See also:**
 > * [Tests](../../../../../../../test/groovy/com/tydbits/hackerrank/graphs/bst_kth_element)
 
-## "Delete kth largest node from a BST" at [HackerRank](https://www.hackerrank.com/contests/daa-assignment-1/challenges/delete-kth-largest-node-from-a-bst)
+## "Delete k<sup>th</sup> largest node from a BST" at [HackerRank](https://www.hackerrank.com/contests/daa-assignment-1/challenges/delete-kth-largest-node-from-a-bst)
 
 Given a Binary Search Tree, delete the kth largest node from it and 
 print a level order traversal of the resulting BST.

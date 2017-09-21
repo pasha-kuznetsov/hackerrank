@@ -15,7 +15,7 @@ public class Solution {
         int k = scanner.nextInt();
 
         BinarySearchTree tree = parseTree(scanner, n);
-        tree.delete(kMax(tree, k));
+        tree.delete(kthLargest(tree, k));
         printTree(out, tree);
     }
 
@@ -26,11 +26,11 @@ public class Solution {
         return tree;
     }
 
-    private static int kMax(BinarySearchTree tree, int k) {
-        int kMax = 0;
+    private static int kthLargest(BinarySearchTree tree, int k) {
+        int key = 0;
         for (Iterator<BinarySearchTree.Node> rev = tree.reverse(); k > 0; --k)
-            kMax = rev.next().key;
-        return kMax;
+            key = rev.next().key;
+        return key;
     }
 
     static void printTree(PrintStream out, BinarySearchTree tree) {

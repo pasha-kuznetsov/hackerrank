@@ -21,8 +21,8 @@ Random HackerRank challenges
 * [Cut the Tree](src/main/java/com/tydbits/hackerrank/graphs/cut_the_tree)
    aka "Cut the Tree" at [HR](https://www.hackerrank.com/challenges/cut-the-tree)
    `MEDIUM`
-* [Binary Search Trees: add, delete, K<sup>th</sup> largest](src/main/java/com/tydbits/hackerrank/graphs/bst_kth_element)
-   aka "Delete kth largest node from a BST" at [HR](https://www.hackerrank.com/contests/daa-assignment-1/challenges/delete-kth-largest-node-from-a-bst)
+* [Binary Search Trees: add, delete, k<sup>th</sup> largest](src/main/java/com/tydbits/hackerrank/graphs/bst_kth_element)
+   aka "Delete k<sup>th</sup> largest node from a BST" at [HR](https://www.hackerrank.com/contests/daa-assignment-1/challenges/delete-kth-largest-node-from-a-bst)
    `EXPERT`
 
 ## C++
