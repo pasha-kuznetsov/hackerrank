@@ -25,6 +25,12 @@ Random HackerRank challenges
    aka "Delete k<sup>th</sup> largest node from a BST" at [HR](https://www.hackerrank.com/contests/daa-assignment-1/challenges/delete-kth-largest-node-from-a-bst)
    `EXPERT`
 
+### Sorting
+
+* [Counting Sort Median](src/main/java/com/tydbits/hackerrank/sorting/counting_sort_median)
+    aka "Fraudulent Activity Notifications" at [HR](https://www.hackerrank.com/challenges/fraudulent-activity-notifications)
+    `MEDIUM`
+
 ## C++
 
 ### Sorting
