@@ -1,4 +1,4 @@
-# K<sup>th</sup> largest node in a BST
+# Binary Search Trees: add, delete, K<sup>th</sup> largest
 
 > **See also:**
 > * [Tests](../../../../../../../test/groovy/com/tydbits/hackerrank/graphs/bst_kth_element)
@@ -81,3 +81,11 @@ and hence the tree after deletion of 8 is:
               9    12
              /    /
             7    11
+
+## Implementation
+
+* [Binary search tree](https://en.wikipedia.org/wiki/Binary_search_tree)
+* [Tree traversal](https://en.wikipedia.org/wiki/Tree_traversal)
+    * A simple way of finding k<sup>th</sup> element is implementing
+    non-recursive reverse in-order traversal as Java `Iterator`,
+    and then just looping through it.
