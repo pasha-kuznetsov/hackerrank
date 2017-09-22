@@ -31,6 +31,12 @@ Random HackerRank challenges
     aka "Fraudulent Activity Notifications" at [HR](https://www.hackerrank.com/challenges/fraudulent-activity-notifications)
     `MEDIUM`
 
+### Dynamic Programming
+
+* [The Maximum Subarray](src/main/java/com/tydbits/hackerrank/dp/maxsubarray)
+    aka "The Maximum Subarray" at [HR](https://www.hackerrank.com/challenges/maxsubarray)
+    `MEDIUM`
+
 ## C++
 
 ### Sorting
