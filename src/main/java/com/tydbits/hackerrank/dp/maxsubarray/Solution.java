@@ -11,29 +11,29 @@ public class Solution {
             for (int i = 0; i < n; ++i)
                 array[i] = scanner.nextInt();
             MaxSubArray maxSubArray = new MaxSubArray(array);
-            System.out.print(maxSubArray.contiguous);
+            System.out.print(maxSubArray.contiguousMax);
             System.out.print(' ');
-            System.out.print(maxSubArray.nonContiguous);
+            System.out.print(maxSubArray.nonContiguousMax);
             System.out.println();
         }
     }
 }
 
 class MaxSubArray {
-    int contiguous;
-    int nonContiguous;
+    int contiguousMax;
+    int nonContiguousMax;
 
     MaxSubArray(int[] array) {
-        int nextPosMax = contiguous = nonContiguous = array[array.length - 1];
+        int nextPosMax = contiguousMax = nonContiguousMax = array[array.length - 1];
         for (int i = array.length - 2; i >= 0; --i) {
             int current = array[i];
             int currentMax = Math.max(current, current + nextPosMax);
-            if (currentMax > contiguous)
-                contiguous = currentMax;
-            if (nonContiguous >= 0 && current > 0)
-                nonContiguous += current;
-            else if (current > nonContiguous)
-                nonContiguous = current;
+            if (currentMax > contiguousMax)
+                contiguousMax = currentMax;
+            if (nonContiguousMax >= 0 && current > 0)
+                nonContiguousMax += current;
+            else if (current > nonContiguousMax)
+                nonContiguousMax = current;
             nextPosMax = currentMax;
         }
     }

@@ -10,7 +10,7 @@ class MaxSubArrayTest extends Specification {
         def maxSubArray = new MaxSubArray(array as int[])
 
         expect:
-        [maxSubArray.contiguous, maxSubArray.nonContiguous] == [expectedContiguous, expectedNonContiguous]
+        [maxSubArray.contiguousMax, maxSubArray.nonContiguousMax] == [expectedContiguous, expectedNonContiguous]
 
         where:
         array                | expectedContiguous | expectedNonContiguous
