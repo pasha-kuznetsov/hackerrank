@@ -27,13 +27,13 @@ Random HackerRank challenges
 
 ### Sorting
 
-* [Counting Sort Median](src/main/java/sorting/sorting.counting_sort_median)
+* [Counting Sort Median](src/main/java/sorting/counting_sort_median)
     aka "Fraudulent Activity Notifications" at [HR](https://www.hackerrank.com/challenges/fraudulent-activity-notifications)
     `MEDIUM`
 
 ### Dynamic Programming
 
-* [The Maximum Subarray](src/main/java/dp/dp.maxsubarray)
+* [The Maximum Subarray](src/main/java/dp/maxsubarray)
     aka "The Maximum Subarray" at [HR](https://www.hackerrank.com/challenges/dp.maxsubarray)
     `MEDIUM`
 
