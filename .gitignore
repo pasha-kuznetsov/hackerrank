@@ -1,0 +1,36 @@
+# hidden
+.*
+
+# html & txt
+*.html
+*.txt
+
+# archives
+*.7z
+
+# built application files
+*.apk
+*.ap_
+*.jar
+*.exe
+
+# Java class files
+*.class
+
+# generated files
+build/
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+*.user
+
+# Intellij project files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Gradle
+!gradle-wrapper.jar
