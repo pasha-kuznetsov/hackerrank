@@ -52,11 +52,10 @@ class GraphComponents {
 
     long pairings() {
         long pairings = 0;
-        List<Integer> components = components();
-        for (int i = 0; i < components.size(); ++i) {
-            for (int j = i + 1; j < components.size(); ++j) {
-                pairings += components.get(i) * components.get(j);
-            }
+        int totalComponents = 0;
+        for (int c : components()) {
+            pairings += totalComponents * c;
+            totalComponents += c;
         }
         return pairings;
     }
