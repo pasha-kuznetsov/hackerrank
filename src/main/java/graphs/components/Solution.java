@@ -32,22 +32,23 @@ class GraphComponents {
     List<Integer> components() {
         List<Integer> components = new ArrayList<>();
         Set<Node> seen = new HashSet<>();
+        Stack<Node> stack = new Stack<>();
         for (Node root: nodes.values()) {
-            if (!seen.add(root)) continue;
-            Stack<Node> stack = new Stack<>();
-            stack.push(root);
-            int componentSize = 1;
+            if (!enqueue(seen, stack, root)) continue;
+            int component = 1;
             do {
-                Node node = stack.pop();
-                for (Node next: node.edges) {
-                    if (!seen.add(next)) continue;
-                    stack.add(next);
-                    componentSize++;
-                }
+                for (Node next: stack.pop().edges)
+                    if (enqueue(seen, stack, next)) component++;
             } while (!stack.isEmpty());
-            components.add(componentSize);
+            components.add(component);
         }
         return components;
+    }
+
+    private boolean enqueue(Set<Node> seen, Stack<Node> stack, Node node) {
+        if (!seen.add(node)) return false;
+        stack.push(node);
+        return true;
     }
 
     long pairings() {
