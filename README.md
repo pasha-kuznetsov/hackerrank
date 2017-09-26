@@ -24,6 +24,9 @@ Random HackerRank challenges
 * [Binary Search Trees: add, delete, k<sup>th</sup> largest](src/main/java/graphs/bst_kth_element)
    aka "Delete k<sup>th</sup> largest node from a BST" at [HR](https://www.hackerrank.com/contests/daa-assignment-1/challenges/delete-kth-largest-node-from-a-bst)
    `EXPERT`
+* [Graph Components](src/main/java/graphs/components)
+    aka "Journey to the Moon" at [HR](https://www.hackerrank.com/challenges/journey-to-the-moon)
+    `MEDIUM`
 
 ### Sorting
 
