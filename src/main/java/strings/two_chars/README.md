@@ -1,4 +1,4 @@
-# Aho–Corasick algorithm
+# Two Chars
 
 ## "Two Chars" at [HR](https://www.hackerrank.com/challenges/two-characters) `Easy`
 
