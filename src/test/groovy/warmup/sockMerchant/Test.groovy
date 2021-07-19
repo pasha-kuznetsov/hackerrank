@@ -1,11 +1,9 @@
 package warmup.sockMerchant
 
-import warmup.sockMerchant.Result
-
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class SockMerchantTest extends Specification {
+class Test extends Specification {
     @Unroll
     def "test #input"() {
         given:
