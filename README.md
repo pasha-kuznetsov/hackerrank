@@ -19,14 +19,20 @@ Random HackerRank challenges
 ### Graphs
 
 * [Cut the Tree](src/main/java/graphs/cut_the_tree)
-   aka "Cut the Tree" at [HR](https://www.hackerrank.com/challenges/cut-the-tree)
+   at [HR](https://www.hackerrank.com/challenges/cut-the-tree)
    `MEDIUM`
-* [Binary Search Trees: add, delete, k<sup>th</sup> largest](src/main/java/graphs/bst_kth_element)
-   aka "Delete k<sup>th</sup> largest node from a BST" at [HR](https://www.hackerrank.com/contests/daa-assignment-1/challenges/delete-kth-largest-node-from-a-bst)
-   `EXPERT`
 * [Graph Components](src/main/java/graphs/components)
     aka "Journey to the Moon" at [HR](https://www.hackerrank.com/challenges/journey-to-the-moon)
     `MEDIUM`
+
+### Binary Search Trees
+
+* [Add, delete, k<sup>th</sup> largest](src/main/java/bst/kth_element)
+  aka "Delete k<sup>th</sup> largest node from a BST" at [HR](https://www.hackerrank.com/contests/daa-assignment-1/challenges/delete-kth-largest-node-from-a-bst)
+  `EXPERT`
+* [Lowest Common Ancestor](src/main/java/bst/lowest_common_ancestor)
+  at [HR](https://www.hackerrank.com/challenges/binary-search-tree-lowest-common-ancestor)
+  `EASY`
 
 ### Sorting
 
@@ -37,7 +43,7 @@ Random HackerRank challenges
 ### Dynamic Programming
 
 * [The Maximum Subarray](src/main/java/dp/maxsubarray)
-    aka "The Maximum Subarray" at [HR](https://www.hackerrank.com/challenges/dp.maxsubarray)
+    at [HR](https://www.hackerrank.com/challenges/dp.maxsubarray)
     `MEDIUM`
 
 ## C++
