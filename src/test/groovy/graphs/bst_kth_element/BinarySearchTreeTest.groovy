@@ -2,8 +2,7 @@ package graphs.bst_kth_element
 
 import spock.lang.Specification
 import spock.lang.Unroll
-
-import java.nio.charset.StandardCharsets
+import utils.InputOutput
 
 class BinarySearchTreeTest extends Specification {
 
@@ -58,15 +57,5 @@ class BinarySearchTreeTest extends Specification {
         '''
         6 5
         10 8 12 7 11 9''' | '10 9 12 7 11 '
-    }
-
-    static class InputOutput {
-        InputStream input
-        OutputStream output = new ByteArrayOutputStream()
-        PrintStream print = new PrintStream(output, true)
-
-        InputOutput(String input) {
-            this.input = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8.name()))
-        }
     }
 }
